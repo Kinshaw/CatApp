@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { Album, Painting } = require('../models');
+const { Album, Photo } = require('../models');
 // Import the custom middleware
 const withAuth = require('../utils/auth.js');
 
@@ -9,7 +9,7 @@ router.get('/', async (req, res) => {
     const dbAlbumData = await Album.findAll({
       include: [
         {
-          model: Painting,
+          model: Photo,
           attributes: ['filename', 'description'],
         },
       ],
@@ -36,7 +36,7 @@ router.get('/Album/:id', withAuth, async (req, res) => {
     const dbAlbumData = await Album.findByPk(req.params.id, {
       include: [
         {
-          model: Painting,
+          model: Photo,
           attributes: [
             'id',
             'title',
@@ -57,15 +57,15 @@ router.get('/Album/:id', withAuth, async (req, res) => {
   }
 });
 
-// GET one painting
-// Use the custom middleware before allowing the user to access the painting
-router.get('/painting/:id', withAuth, async (req, res) => {
+// GET one Photo
+// Use the custom middleware before allowing the user to access the Photo
+router.get('/Photo/:id', withAuth, async (req, res) => {
   try {
-    const dbPaintingData = await Painting.findByPk(req.params.id);
+    const dbPhotoData = await Photo.findByPk(req.params.id);
 
-    const painting = dbPaintingData.get({ plain: true });
+    const Photo = dbPhotoData.get({ plain: true });
 
-    res.render('painting', { painting, loggedIn: req.session.loggedIn });
+    res.render('Photo', { Photo, loggedIn: req.session.loggedIn });
   } catch (err) {
     console.log(err);
     res.status(500).json(err);
