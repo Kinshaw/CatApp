@@ -1,21 +1,16 @@
 const { Model, DataTypes } = require('sequelize');
 const sequelize = require('../config/connection');
 
-class Photo extends Model {}
+class Poll extends Model {}
 
-Photo.init(
+Poll.init(
   {
     id: {
       type: DataTypes.INTEGER,
-      allowNull: false,
       primaryKey: true,
       autoIncrement: true,
     },
-    title: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    caption: {
+    question: {
       type: DataTypes.TEXT,
       allowNull: false,
     },
@@ -24,8 +19,8 @@ Photo.init(
     sequelize,
     freezeTableName: true,
     underscored: true,
-    modelName: 'photo',
+    modelName: 'poll',
   }
 );
 
-module.exports = Photo;
+module.exports = Poll;

@@ -1,26 +1,29 @@
 const { Model, DataTypes } = require('sequelize');
 const sequelize = require('../config/connection');
 
-class Album extends Model {}
+class PhotoLike extends Model {}
 
-Album.init(
+PhotoLike.init(
   {
     id: {
       type: DataTypes.INTEGER,
-      allowNull: false,
       primaryKey: true,
       autoIncrement: true,
     },
-    name: {
-      type: DataTypes.STRING,
+    userid: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: 'user',
+        key: 'id',
+      },
       allowNull: false,
     },
-    starting_date: {
-      type: DataTypes.DATE,
-      allowNull: false,
-    },
-    ending_date: {
-      type: DataTypes.DATE,
+    photoid: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: 'photo',
+        key: 'id',
+      },
       allowNull: false,
     },
   },
@@ -28,8 +31,8 @@ Album.init(
     sequelize,
     freezeTableName: true,
     underscored: true,
-    modelName: 'Album',
+    modelName: 'photolike',
   }
 );
 
-module.exports = Album;
+module.exports = PhotoLike;
