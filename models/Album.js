@@ -11,16 +11,12 @@ Album.init(
       primaryKey: true,
       autoIncrement: true,
     },
-    name: {
+    title: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    starting_date: {
-      type: DataTypes.DATE,
-      allowNull: false,
-    },
-    ending_date: {
-      type: DataTypes.DATE,
+    caption: {
+      type: DataTypes.TEXT,
       allowNull: false,
     },
   },
@@ -28,7 +24,7 @@ Album.init(
     sequelize,
     freezeTableName: true,
     underscored: true,
-    modelName: 'Album',
+    modelName: 'album',
   }
 );
 
