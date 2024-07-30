@@ -4,9 +4,13 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Museum</title>
+  <title>PurrPal</title>
+  <!-- Include Bootstrap CSS -->
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="/css/jass.css">
   <link rel="stylesheet" type="text/css" href="/css/style.css">
+  <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+
 </head>
 
 <body>
@@ -22,16 +26,35 @@
     {{/if}}
   </nav>
   <main>
+
     <aside>
       <h2>Enjoy the albums!</h2>
     </aside>
-    <div class="album">
+ 
+
+    
+    <div class="partialLoaded">
+
       {{{body}}}
     </div>
+
   </main>
+
   {{#if loggedIn}}
   <script src="/js/logout.js"></script>
   {{/if}}
+
+  {{!-- <h1>this is the bottom of the page</h1> --}}
+
+
+
+   <!-- Include Bootstrap JS and dependencies -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="/js/carousel.js"></script>
+  <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <script src="/js/swiper.js"></script>
 </body>
 
 </html>

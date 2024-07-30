@@ -1,8 +1,16 @@
+{{!-- this displays the individually requested photo id --}}
+
+
 <section class="photo">
-  <img src="/images/{{photo.filename}}" alt="{{photo.description}}">
+
   <div class="photo-details">
-    <h3>{{photo.title}}</h3>
-    <p>By: {{photo.artist}}</p>
-    <p>Exhibition open until: {{ format_date photo.exhibition_date}}</p>
+    
+    <br>
+    <p> this is the partial being loaded when the route is /Photo/:id</p>
+
+    <h1>{{Photo1.title}}</h1>
+    <img src="/images/{{Photo1.filename}}" alt="{{Photo1.title}}">
+    <p>{{Photo1.caption}}</p>
+    <a href="/">Back to Home</a>
   </div>
 </section>

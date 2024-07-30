@@ -17,7 +17,7 @@ PollComment.init(
     userid: {
       type: DataTypes.INTEGER,
       references: {
-        model: 'user', // Model name should be in lowercase
+        model: 'user', 
         key: 'id',
       },
       allowNull: false,
@@ -25,7 +25,7 @@ PollComment.init(
     pollid: {
       type: DataTypes.INTEGER,
       references: {
-        model: 'poll', // Model name should be in lowercase
+        model: 'poll', 
         key: 'id',
       },
       allowNull: false,

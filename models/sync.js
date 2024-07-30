@@ -1,5 +1,5 @@
 const sequelize = require('../config/connection');
-const { User, Photo, Poll, Vote, PhotoLike, PollComment } = require('./index');
+const { User, Photo, Poll, Vote, PhotoLike, PollComment, Album } = require('./index');
 
 const syncDatabase = async () => {
     try {

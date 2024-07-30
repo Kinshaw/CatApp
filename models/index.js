@@ -4,6 +4,7 @@ const Poll = require('./Poll');
 const Vote = require('./Vote');
 const PhotoLike = require('./PhotoLike');
 const PollComment = require('./PollComment');
+const Album = require('./Album');
 
 // One-to-Many Relationship between User and PhotoLike
 User.hasMany(PhotoLike, {
@@ -65,4 +66,13 @@ PollComment.belongsTo(Poll, {
   foreignKey: 'pollid'
 });
 
-module.exports = { User, Photo, Poll, Vote, PhotoLike, PollComment };
+Album.hasMany(Photo, {
+  foreignKey: 'album_id',
+  onDelete: 'CASCADE'
+});
+
+Photo.belongsTo(Album, {
+  foreignKey: 'album_id'
+});
+
+module.exports = { User, Photo, Poll, Vote, PhotoLike, PollComment, Album};

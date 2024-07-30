@@ -1,10 +1,30 @@
-<section class="container">
-  <h3 class="album-name">{{album.name}}</h3>
-  <h4>Opening Hour: {{format_time album.starting_date}}</h4>
-  <h4>Closing Hour: {{format_time album.ending_date}}</h4>
-  <section class="flex-row justify-center">
-    {{#each album.photos as |photo|}}
-    {{> photo-details}}
+{{!-- This displays the carousel --}}
+
+<div>
+  <h1>Photo Album</h1>
+</div>
+<div>
+<div id="photoCarousel" class="carousel slide" data-ride="carousel">
+  <div class="carousel-inner">
+    {{#each photos}}
+      <div class="carousel-item {{#if @first}}active{{/if}}">
+        <img src="/images/{{this.filename}}" class="d-block w-100 carousel-image" alt="{{this.title}}">
+        <div class="carousel-caption d-none d-md-block">
+          <h5>{{this.title}}</h5>
+          <p>{{this.caption}}</p>
+        </div>
+      </div>
     {{/each}}
-  </section>
-</section>
+  </div>
+
+
+  <a id="carousel-prev" class="carousel-control-prev" href="#photoCarousel" role="button" data-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="sr-only">Previous</span>
+  </a>
+  <a id="carousel-next" class="carousel-control-next" href="#photoCarousel" role="button" data-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="sr-only">Next</span>
+  </a>
+</div>
+</div>
