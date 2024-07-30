@@ -1,7 +1,7 @@
 const { Model, DataTypes } = require('sequelize');
 const sequelize = require('../config/connection');
 
-class Photo extends Model {}
+class Photo extends Model { }
 
 Photo.init(
   {
@@ -16,6 +16,10 @@ Photo.init(
       allowNull: false,
     },
     caption: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+    },
+    filename: {
       type: DataTypes.TEXT,
       allowNull: false,
     },

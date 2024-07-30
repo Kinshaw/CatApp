@@ -1,0 +1,27 @@
+<!-- this displays the swipe section -->
+<div>
+  <h1>Swiper Photo Album</h1>
+</div>
+
+<!-- Swiper -->
+<div class="swiper-container">
+  <div class="swiper-wrapper">
+    {{#each photos}}
+    <div class="swiper-slide">
+
+      <img src="/images/{{this.filename}}" alt="{{this.title}}">
+      <div class="swiper-caption">
+        <p>{{this.title}}: {{this.caption}}</p>
+        <button class="like-button" data-id="{{this.id}}">Like</button> 
+      </div>
+    </div>
+    {{/each}}
+  </div>
+
+  <!-- Add Pagination -->
+  <div class="swiper-pagination"></div>
+
+  <!-- Add Navigation -->
+  <div class="swiper-button-next"></div>
+  <div class="swiper-button-prev"></div>
+</div>
