@@ -1,16 +1,21 @@
-{{!-- this displays the individually requested photo id --}}
-
-
-<section class="photo">
-
-  <div class="photo-details">
-    
-    <br>
-    <p> this is the partial being loaded when the route is /Photo/:id</p>
-
-    <h1>{{Photo1.title}}</h1>
-    <img src="/images/{{Photo1.filename}}" alt="{{Photo1.title}}">
-    <p>{{Photo1.caption}}</p>
-    <a href="/">Back to Home</a>
-  </div>
-</section>
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Your Photos</title>
+</head>
+<body>
+  <h1>Your Photos</h1>
+  {{#each photos}}
+    <div>
+      <img src="{{this.url}}" alt="{{this.title}}" />
+      <h2>{{this.title}}</h2>
+      <p>{{this.comment}}</p>
+      <a href="/photos/update/{{this.id}}">Edit</a>
+      <form action="/photos/delete/{{this.id}}" method="POST">
+        <button type="submit">Delete</button>
+      </form>
+    </div>
+  {{/each}}
+  <a href="/photos/upload">Upload a new photo</a>
+</body>
+</html>

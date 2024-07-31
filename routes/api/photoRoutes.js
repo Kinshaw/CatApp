@@ -1,74 +1,93 @@
 const router = require('express').Router();
 const Photo = require('../../models/Photo');
+const { body, validationResult } = require('express-validator');
 
-// GET all photos
-router.get('/', async (req, res) => {
+// GET the current photo
+router.get('/current', async (req, res) => {
   try {
-    const photoData = await Photo.findAll();
-    if (photoData.length === 0) {
+    const photos = await Photo.findAll();
+    if (photos.length === 0) {
       return res.status(404).json({ message: 'No photos found' });
     }
-    res.json(photoData);
+    res.json(photos);
   } catch (err) {
-    res.status(500).json({ message: 'Error retrieving photos', error: err });
+    console.error('Error retrieving photos:', err);
+    res.status(500).json({ message: 'Error retrieving photos' });
   }
 });
 
-  // GET a single photo
+// GET a single photo
 router.get('/:id', async (req, res) => {
   try {
-    const photoData = await Photo.findByPk(req.params.id);
-    if (!photoData) {
+    const photo = await Photo.findByPk(req.params.id);
+    if (!photo) {
       return res.status(404).json({ message: 'Photo not found' });
     }
-    res.json(photoData);
+    res.json(photo);
   } catch (err) {
-    res.status(500).json({ message: 'Error retrieving photo', error: err });
+    console.error('Error retrieving photo', err);
+    res.status(500).json({ message: 'Error retrieving photo' });
   }
 });
 
 // CREATE a photo
-router.post('/', async (req, res) => {
-  const { title, url } = req.body; // Ensure these fields match your model
-  if (!title || !url) {
-    return res.status(400).json({ message: 'Title and URL are required' });
-  }
+router.post(
+  '/', 
+  [
+    body('title').notEmpty().withMessage('Title is required'),
+    body('filename').notEmpty().withMessage('filename is required'),
+  ],
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
 
-  try {
-    const newPhoto = await Photo.create(req.body);
-    res.status(201).json(newPhoto);
-  } catch (err) {
-    res.status(500).json({ message: 'Error creating photo', error: err });
+    try {
+      const newPhoto = await Photo.create(req.body);
+      res.status(201).json(newPhoto);
+    } catch (err) {
+      console.error('Error creating photo:', err);
+      res.status(500).json({ message: 'Error creating photo' });
+    }
   }
-});
+);
 
 // UPDATE a photo
-router.put('/:id', async (req, res) => {
-  const { title, url } = req.body; // Ensure these fields match your model
-  if (!title || !url) {
-    return res.status(400).json({ message: 'Title and URL are required' });
-  }
-
-  try {
-    const [updated] = await Photo.update(req.body, {
-      where: { id: req.params.id }
-    });
-    if (updated) {
-      const updatedPhoto = await Photo.findByPk(req.params.id);
-      res.json(updatedPhoto);
-    } else {
-      res.status(404).json({ message: 'Photo not found' });
+router.put(
+  '/:id',
+  [
+    body('title').notEmpty().withMessage('Title is required'),
+    body('filename').notEmpty().withMessage('filename is required'),
+  ],
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
     }
-  } catch (err) {
-    res.status(500).json({ message: 'Error updating photo', error: err });
+
+    try {
+      const [updated] = await Photo.update(req.body, {
+        where: { id: req.params.id },
+      });
+      if (updated) {
+        const updatedPhoto = await Photo.findByPk(req.params.id);
+        res.json(updatedPhoto);
+      } else {
+        res.status(404).json({ message: 'Photo not found' });
+      }
+    } catch (err) {
+      console.error('Error updating photo:', err);
+      res.status(500).json({ message: 'Error updating photo' });
+    }
   }
-});
+);
 
 // DELETE a photo
 router.delete('/:id', async (req, res) => {
   try {
     const deleted = await Photo.destroy({
-      where: { id: req.params.id }
+      where: { id: req.params.id },
     });
     if (deleted) {
       res.status(204).send(); // No content
@@ -76,8 +95,9 @@ router.delete('/:id', async (req, res) => {
       res.status(404).json({ message: 'Photo not found' });
     }
   } catch (err) {
-    res.status(500).json({ message: 'Error deleting photo', error: err });
+    console.error('Error deleting photos', err);
+    res.status(500).json({ message: 'Error deleting photo' });
   }
 });
 
-module.exports = router;
+module.exports = router; 
