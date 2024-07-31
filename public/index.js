@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const userRoutes = require('./routes/userRoutes');
 
 const app = express();
+const path = require('path');
 const PORT = process.env.PORT || 3000;
 
 // Middleware
@@ -11,8 +12,8 @@ app.use(bodyParser.json());
 // Routes
 app.use(userRoutes);
 
-// Serve static files (like your create-account.js)
-app.use(express.static('public'));
+// Serve static files from the public directory
+app.use(express.static(path.join(__dirname, 'public')));
 
 // View engine setup (if using handlebars, for example)
 const exphbs = require('express-handlebars');

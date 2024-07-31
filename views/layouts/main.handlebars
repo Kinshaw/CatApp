@@ -15,10 +15,14 @@
 
 <body>
   <header>
+    <img src="/images/logo.png" alt="PurrPal Logo" width="150" height="150" class="logo">
     <h1>Welcome to PurrPal!</h1>
   </header>
   <nav>
-    <a href="/">Home</a>
+    <a href="/">
+      <img src="/images/home-icon.png" alt="Home" width="27" height="27" class="home-icon">
+      Home
+    </a>
     {{#if loggedIn}}
     <button id="logout" class="btn-no-style">Logout</button>
     {{else}}
