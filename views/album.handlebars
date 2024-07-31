@@ -1,12 +1,14 @@
 {{!-- This displays the carousel --}}
 
 <div>
-  <h1>Photo Album</h1>
+  <br>
+  <h1>My Profile Page</h1>
 </div>
+<p>These are my favorite photos</p>
 <div>
 <div id="photoCarousel" class="carousel slide" data-ride="carousel">
   <div class="carousel-inner">
-    {{#each photos}}
+    {{#each profilePhotos}}
       <div class="carousel-item {{#if @first}}active{{/if}}">
         <img src="/images/{{this.filename}}" class="d-block w-100 carousel-image" alt="{{this.title}}">
         <div class="carousel-caption d-none d-md-block">

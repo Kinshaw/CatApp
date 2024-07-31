@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -24,19 +26,26 @@
     {{else}}
     <a href="/login">Login</a>
     {{/if}}
+    {{#if loggedIn}}
+     <a href="/profile">My Profile</a>
+    {{/if}}
+     {{#if loggedIn}}
+     <a href="/update">Settings</a>
+    {{/if}}
   </nav>
   <main>
-
-    <aside>
+<div>
+  <br>
+  <br>
+</div>
+    {{!-- <aside>
       <h2>Enjoy the albums!</h2>
-    </aside>
+    </aside> --}}
  
 
     
-    <div class="partialLoaded">
-
-      {{{body}}}
-    </div>
+         {{{body}}}
+   
 
   </main>
 
@@ -57,4 +66,4 @@
     <script src="/js/swiper.js"></script>
 </body>
 
-</html>
+</html> 
