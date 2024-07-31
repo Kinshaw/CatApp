@@ -7,10 +7,11 @@ PhotoLike.init(
   {
     id: {
       type: DataTypes.INTEGER,
+      allowNull: false,
       primaryKey: true,
       autoIncrement: true,
     },
-    userid: {
+    user_id: {
       type: DataTypes.INTEGER,
       references: {
         model: 'user',
@@ -18,7 +19,7 @@ PhotoLike.init(
       },
       allowNull: false,
     },
-    photoid: {
+    photo_id: {
       type: DataTypes.INTEGER,
       references: {
         model: 'photo',
@@ -31,7 +32,7 @@ PhotoLike.init(
     sequelize,
     freezeTableName: true,
     underscored: true,
-    modelName: 'photolike',
+    modelName: 'photo_like',
   }
 );
 

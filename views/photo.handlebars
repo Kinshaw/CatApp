@@ -1,21 +1,38 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Your Photos</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{photo.title}}</title>
+  <script src="/js/add-comment.js" defer></script>
 </head>
 <body>
-  <h1>Your Photos</h1>
-  {{#each photos}}
+  <h1>{{photo.title}}</h1>
+  <img src="/uploads/{{photo.fileName}}" alt="{{photo.title}}">
+  <p>{{photo.caption}}</p>
+
+  {{#if loggedIn}}
+    <form id="comment-form">
+      <input type="hidden" id="photo-id" name="photoId" value="{{photo.id}}">
+      <textarea id="comment-content" name="content" required></textarea>
+      <button type="submit">Add Comment</button>
+    </form>
+  {{else}}
+    <p>Please <a href="/login">login</a> to add comments.</p>
+  {{/if}}
+
+  <!-- Display Comments -->
+  <h2>Comments</h2>
+  {{#each photo.comments}}
     <div>
-      <img src="{{this.url}}" alt="{{this.title}}" />
-      <h2>{{this.title}}</h2>
-      <p>{{this.comment}}</p>
-      <a href="/photos/update/{{this.id}}">Edit</a>
-      <form action="/photos/delete/{{this.id}}" method="POST">
-        <button type="submit">Delete</button>
-      </form>
+      <p><strong>User {{this.userId}}:</strong> {{this.content}}</p>
     </div>
+  {{else}}
+    <p>No comments yet.</p>
   {{/each}}
+
+  <!-- Navigation Links -->
   <a href="/photos/upload">Upload a new photo</a>
+  <a href="/photos">Back to photo list</a>
 </body>
 </html>

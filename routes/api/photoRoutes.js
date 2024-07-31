@@ -1,41 +1,45 @@
-const router = require('express').Router();
-const Photo = require('../../models/Photo');
+const express = require('express');
+const router = express.Router();
+const Photo = require('../../models/Photo'); // Ensure this path is correct
 const { body, validationResult } = require('express-validator');
+const authenticateJWT = require('../../middleware/authenticateJWT'); // Ensure this path is correct
+const multer = require('multer');
+const path = require('path');
 
-// GET the current photo
-router.get('/current', async (req, res) => {
-  try {
-    const photos = await Photo.findAll();
-    if (photos.length === 0) {
-      return res.status(404).json({ message: 'No photos found' });
-    }
-    res.json(photos);
-  } catch (err) {
-    console.error('Error retrieving photos:', err);
-    res.status(500).json({ message: 'Error retrieving photos' });
+// Configure multer for file uploads
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'public/uploads');
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + path.extname(file.originalname));
   }
 });
 
-// GET a single photo
-router.get('/:id', async (req, res) => {
-  try {
-    const photo = await Photo.findByPk(req.params.id);
-    if (!photo) {
-      return res.status(404).json({ message: 'Photo not found' });
+// File filter to accept only specific image types
+const upload = multer({
+  storage: storage,
+  fileFilter: (req, file, cb) => {
+    const allowedTypes = /jpeg|jpg|png|gif/;
+    const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
+    const mimetype = allowedTypes.test(file.mimetype);
+
+    if (mimetype && extname) {
+      return cb(null, true);
+    } else {
+      cb('Error: Images only!');
     }
-    res.json(photo);
-  } catch (err) {
-    console.error('Error retrieving photo', err);
-    res.status(500).json({ message: 'Error retrieving photo' });
   }
 });
 
 // CREATE a photo
 router.post(
-  '/', 
+  '/',
+  authenticateJWT,
+  upload.single('photo'),
   [
     body('title').notEmpty().withMessage('Title is required'),
-    body('filename').notEmpty().withMessage('filename is required'),
+    body('caption').notEmpty().withMessage('Caption is required'),
   ],
   async (req, res) => {
     const errors = validationResult(req);
@@ -44,7 +48,16 @@ router.post(
     }
 
     try {
-      const newPhoto = await Photo.create(req.body);
+      const { title, caption } = req.body;
+      const fileName = req.file ? req.file.filename : null;
+
+      const newPhoto = await Photo.create({
+        title,
+        caption,
+        filename: fileName, // Adjusted field name to match your model
+        user_id: req.user.id // Adjusted field name to match your model
+      });
+
       res.status(201).json(newPhoto);
     } catch (err) {
       console.error('Error creating photo:', err);
@@ -56,9 +69,11 @@ router.post(
 // UPDATE a photo
 router.put(
   '/:id',
+  authenticateJWT,
+  upload.single('photo'),
   [
     body('title').notEmpty().withMessage('Title is required'),
-    body('filename').notEmpty().withMessage('filename is required'),
+    body('caption').notEmpty().withMessage('Caption is required'),
   ],
   async (req, res) => {
     const errors = validationResult(req);
@@ -67,14 +82,19 @@ router.put(
     }
 
     try {
-      const [updated] = await Photo.update(req.body, {
-        where: { id: req.params.id },
-      });
+      const { title, caption } = req.body;
+      const fileName = req.file ? req.file.filename : null;
+
+      const [updated] = await Photo.update(
+        { title, caption, filename: fileName }, // Adjusted field name to match your model
+        { where: { id: req.params.id, user_id: req.user.id } } // Adjusted field name to match your model
+      );
+
       if (updated) {
         const updatedPhoto = await Photo.findByPk(req.params.id);
         res.json(updatedPhoto);
       } else {
-        res.status(404).json({ message: 'Photo not found' });
+        res.status(404).json({ message: 'Photo not found or user not authorized' });
       }
     } catch (err) {
       console.error('Error updating photo:', err);
@@ -84,20 +104,20 @@ router.put(
 );
 
 // DELETE a photo
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', authenticateJWT, async (req, res) => {
   try {
     const deleted = await Photo.destroy({
-      where: { id: req.params.id },
+      where: { id: req.params.id, user_id: req.user.id } // Adjusted field name to match your model
     });
     if (deleted) {
-      res.status(204).send(); // No content
+      res.status(204).send();
     } else {
-      res.status(404).json({ message: 'Photo not found' });
+      res.status(404).json({ message: 'Photo not found or user not authorized' });
     }
   } catch (err) {
-    console.error('Error deleting photos', err);
+    console.error('Error deleting photo:', err);
     res.status(500).json({ message: 'Error deleting photo' });
   }
 });
 
-module.exports = router; 
+module.exports = router;

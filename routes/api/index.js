@@ -1,8 +1,11 @@
 const router = require('express').Router();
+const userRoutes = require('./userRoutes');
 const photoRoutes = require('./photoRoutes');
-const albumRoutes = require('./albumRoutes');
+const commentRoutes = require('./commentRoutes');
 
-router.use('/Photo', photoRoutes);
-router.use('/Album', albumRoutes);
+// Define routes
+router.use('/users', userRoutes);
+router.use('/photos', photoRoutes);
+router.use('/comments', commentRoutes);
 
 module.exports = router;

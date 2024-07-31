@@ -1,114 +1,84 @@
 const router = require('express').Router();
-const { Album, Photo } = require('../models');
-// Import the custom middleware
-const withAuth = require('../utils/auth.js');
+const { Photo, PollComment } = require('../models');
+const withAuth = require('../middleware/authenticateJWT'); // Correct path to authentication middleware
 
-// GET all photos for homepage (Kim: this works and displays the carousel)
+// GET all photos for homepage
 router.get('/', async (req, res) => {
   try {
     const dbPhotoData = await Photo.findAll({
-      attributes: ['title', 'caption', 'filename'],
+      attributes: ['title', 'caption', 'fileName'], // Updated to use fileName
     });
 
-    const photos = dbPhotoData.map((photo) =>
-      photo.get({ plain: true })
-    );
+    const photos = dbPhotoData.map(photo => photo.get({ plain: true }));
 
-    //res.json(photos);  // Return JSON data
-   
-    res.render('album', { photos });
+    res.render('album', { photos, loggedIn: req.user ? true : false }); // Check for loggedIn status
   } catch (err) {
-    console.log(err);
+    console.error(err);
     res.status(500).json(err);
   }
 });
 
-// GET one Album (kim: this works renders json to route)
-// Use the custom middleware before allowing the user to access the Album
-//router.get('/Album/:id', withAuth, async (req, res) => {
-// GET one Album
-router.get('/Photo/:id', async (req, res) => {
+// GET one Photo
+router.get('/photo/:id', async (req, res) => {
   try {
-    const dbAlbumData = await Album.findByPk(req.params.id, {
+    const dbPhotoData = await Photo.findByPk(req.params.id, {
       include: [
         {
-          model: Photo,
-          attributes: [
-            'id',
-            'title',
-            'caption',
-          ],
+          model: PollComment,
+          attributes: ['id', 'content', 'userId'], // Include comments
         },
       ],
     });
 
-    if (!dbAlbumData) {
-      res.status(404).json({ message: 'No album found with this id' });
-      return;
+    if (!dbPhotoData) {
+      return res.status(404).json({ message: 'No photo found with this id' });
     }
 
-    const album = dbAlbumData.get({ plain: true });
-    res.json(album);
-    // res.render('Album', { album, loggedIn: req.session.loggedIn });
+    const photo = dbPhotoData.get({ plain: true });
+    res.render('photo', { photo, loggedIn: req.user ? true : false }); // Pass loggedIn status
   } catch (err) {
-    console.log(err);
+    console.error(err);
     res.status(500).json(err);
   }
 });
-  
 
+// GET all photos for swiper component
+router.get('/swiper', async (req, res) => {
+  try {
+    const dbPhotoData = await Photo.findAll({
+      attributes: ['title', 'caption', 'fileName', 'id'],
+    });
 
-// GET one Photo
-// Use the custom middleware before allowing the user to access the Photo
-//router.get('/Photo/:id', withAuth, async (req, res) => {
-  router.get('/Photo/:id', async (req, res) => {
-    try {
-      const dbPhotoData = await Photo.findByPk(req.params.id);
-  
-      if (!dbPhotoData) {
-        return res.status(404).json({ message: 'No photo found with this id' });
-      }
-  
-      const Photo1 = dbPhotoData.get({ plain: true });
-      res.render('photo', { Photo1 });
-    } catch (err) {
-      console.log(err);
-      res.status(500).json(err);
-    }
-  });
-   
+    const photos = dbPhotoData.map(photo => photo.get({ plain: true }));
 
-  router.get('/swiper', async (req, res) => {
-    try {
-      const dbPhotoData = await Photo.findAll({
-        attributes: ['title', 'caption', 'filename', 'id'],
-      });
-  
-      const photos = dbPhotoData.map((photo) =>
-        photo.get({ plain: true })
-      );
-  
-      res.render('swiper', { photos });
-    } catch (err) {
-      console.log(err);
-      res.status(500).json(err);
-    }
-  });
-  
- 
-// this is not working yet
+    res.render('swiper', { photos, loggedIn: req.user ? true : false }); // Pass loggedIn status
+  } catch (err) {
+    console.error(err);
+    res.status(500).json(err);
+  }
+});
+
+// Render login page
 router.get('/login', (req, res) => {
-  // if (!req.session.loggedIn) {
-  //   res.redirect('/login');
-  //   return;
-  // }
-
+  if (req.user) {
+    res.redirect('/'); // Redirect to home if already logged in
+    return;
+  }
   res.render('login');
 });
 
+// Render signup page
 router.get('/signup', (req, res) => {
+  if (req.user) {
+    res.redirect('/'); // Redirect to home if already logged in
+    return;
+  }
   res.render('create-account');
 });
 
-module.exports = router;
+// Render photo upload page
+router.get('/upload', withAuth, (req, res) => {
+  res.render('upload-photo', { loggedIn: req.user ? true : false });
+});
 
+module.exports = router;

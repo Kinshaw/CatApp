@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Photos</title>
+</head>
+<body>
+  <h1>Your Photos</h1>
+  {{#each photos}}
+    <div>
+      <img src="/uploads/{{this.fileName}}" alt="{{this.title}}" />
+      <h2>{{this.title}}</h2>
+      <p>{{this.caption}}</p>
+      <a href="/photos/update/{{this.id}}">Edit</a>
+      <form action="/photos/delete/{{this.id}}" method="POST">
+        <button type="submit">Delete</button>
+      </form>
+    </div>
+  {{/each}}
+  <a href="/photos/upload">Upload a new photo</a>
+</body>
+</html>

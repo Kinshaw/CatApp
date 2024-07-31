@@ -1,10 +1,12 @@
 module.exports = {
+  // Format the time in a locale-specific format
   format_time: (date) => {
     return date.toLocaleTimeString();
   },
+  
+  // Format the date in MM/DD/YYYY format
   format_date: (date) => {
-    return `${new Date(date).getMonth() + 1}/${new Date(date).getDate()}/${
-      new Date(date).getFullYear() + 5
-    }`;
+    const d = new Date(date);
+    return `${d.getMonth() + 1}/${d.getDate()}/${d.getFullYear()}`;
   },
 };
