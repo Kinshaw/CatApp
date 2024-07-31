@@ -98,10 +98,10 @@ router.get('/Photo/:id', async (req, res) => {
  
 // this is not working yet
 router.get('/login', (req, res) => {
-  // if (!req.session.loggedIn) {
-  //   res.redirect('/login');
-  //   return;
-  // }
+  if (!req.session.loggedIn) {
+    res.redirect('/login');
+    return;
+  }
 
   res.render('login');
 });
