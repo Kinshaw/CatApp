@@ -78,54 +78,14 @@ router.get('/Photo/:id', async (req, res) => {
 // GET one User with the goal of updating their bio
 // Use the custom middleware before allowing the user to access the Photo
 //router.get('/Photo/:id', withAuth, async (req, res) => {
-  router.get('/Photo/:id', async (req, res) => {
-    try {
-      const dbPhotoData = await Photo.findByPk(req.params.id);
-  
-      if (!dbPhotoData) {
-        return res.status(404).json({ message: 'No photo found with this id' });
-      }
-  
-      const Photo1 = dbPhotoData.get({ plain: true });
-      res.render('photo', { Photo1 });
-    } catch (err) {
-      console.log(err);
-      res.status(500).json(err);
+router.get('/update', async (req, res) => {
+  try {
+    console.log("my user id is logged in as " + req.session.user_id);
+
+    const userData = await User.findByPk(req.session.user_id);
+
+    if (!userData) {
+      return res.status(404).json({ message: 'No user found with this id' });
     }
-  });
-   
 
-  router.get('/swiper', async (req, res) => {
-    try {
-      const dbPhotoData = await Photo.findAll({
-        attributes: ['title', 'caption', 'filename', 'id'],
-      });
-  
-      const photos = dbPhotoData.map((photo) =>
-        photo.get({ plain: true })
-      );
-  
-      res.render('swiper', { photos });
-    } catch (err) {
-      console.log(err);
-      res.status(500).json(err);
-    }
-  });
-  
- 
-// this is not working yet
-router.get('/login', (req, res) => {
-  if (!req.session.loggedIn) {
-    res.redirect('/login');
-    return;
-  }
-
-  res.render('login');
-});
-
-router.get('/signup', (req, res) => {
-  res.render('create-account');
-});
-
-module.exports = router;
 
