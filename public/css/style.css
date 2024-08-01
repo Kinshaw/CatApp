@@ -1,10 +1,10 @@
 :root {
-  --primary: #3d5852;
-  --secondary: #86938f;
-  --tertiary: #5e877f;
-  --quatrinary: #6c6b67;
+  --secondary: #f38e8c;
+  --tertiary: #c46052;
+  --primary: #bb4e51;
+  --quatrinary: #409c9b;
   --light: #e3e4e3;
-  --dark: #182c23;
+  --dark: #05504b;
   --error: rgb(228, 46, 1);
   --border-radius: 0.3rem;
 }
@@ -14,8 +14,8 @@ body {
   margin: 0;
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
-  justify-content: flex-start;
+  /* min-height: 100vh; */
+  width: 100vw;
   background-color: var(--quatrinary);
 }
 
@@ -37,8 +37,10 @@ header {
 
 main {
   display: flex;
-  flex-wrap: wrap;
-  flex-grow: 1;
+  flex-direction: column;
+  align-items: center;
+  /* flex-wrap: wrap;
+  flex-grow: 1; */
 }
 
 aside {
@@ -85,6 +87,18 @@ nav a:hover {
   font-size: 100%;
   transition: color 0.1s;
   margin-left: 16px;
+} 
+
+.like-button  {
+  background: var(--dark);
+  border: none;
+  padding: 10px;
+  margin: 2px;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 100%;
+  transition: color 0.1s;
+
 }
 
 img {
@@ -118,9 +132,24 @@ img {
 .login-card {
   margin: 0 0 20px 0;
   flex: 0 0 50%;
-  max-width: 50%;
+  max-width: 43%;
   padding: 5px;
+  margin: 5px;
   border: 3px solid var(--dark);
+  border-radius: var(--border-radius);
+  border-style: double;
+  border-width: thick;
+  background-color: #577a7c;
+  color: var(--light);
+}
+
+.update-card {
+  margin: 0 0 20px 0;
+  flex: 0 0 50%;
+  
+  /* max-width: 50%; */
+  padding: 20px;
+  border: 8px solid var(--dark);
   border-radius: var(--border-radius);
   border-style: double;
   border-width: thick;
@@ -184,8 +213,8 @@ img {
 
 /* public/css/style.css */
 .swiper-container {
-  width: 100%;
-  height: 500px;
+  width: 50vw;
+  height: 100vh;
 }
 
 
@@ -196,24 +225,24 @@ img {
   justify-content: center;
   align-items: center;
   overflow: hidden; /* Hide any overflow from larger images */
-  height: 500px; /* Set a fixed height for the slide */
+  /* height: 500px; */
 }
 
 .swiper-slide img  {
-  width: 400px;
+  width: 100%;
   height: auto; /* Ensure images maintain aspect ratio */
   object-fit: cover; /* Ensure the image covers the container without distortion */
-  max-height: 400px; /* Ensure the image does not exceed the height of the swiper-slide */
+  max-height: 600px;
 }
 
 
 .swiper-caption {
-  /* position: absolute; */
-  bottom: 20px;
-  left: 20px;
+  width: 100%; 
+  height: auto;
   color: white;
-  background: rgba(0, 0, 0, 0.5);
-  padding: 10px;
+  font-size: large;
+  
+  padding: 2px;
   border-radius: 5px;
 }
 
