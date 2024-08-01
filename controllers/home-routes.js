@@ -88,4 +88,67 @@ router.get('/update', async (req, res) => {
       return res.status(404).json({ message: 'No user found with this id' });
     }
 
+    const usersData = userData.get({ plain: true });
+    // const usersData = userData.map((photo) =>
+    //   photo.get({ plain: true })
+    // );
+    
+    //res.json(usersData);
+    res.render('update', {
+      usersData,
+      loggedIn: req.session.loggedIn,
+      user: req.session.user_id
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err);
+  }
+});
 
+
+router.get('/', withAuth, async (req, res) => {
+  try {
+    const dbPhotoData = await Photo.findAll({
+      attributes: ['title', 'caption', 'filename', 'id'],
+    });
+
+    const photos = dbPhotoData.map((photo) =>
+      photo.get({ plain: true })
+    );
+
+    console.log("LoggedIn:", req.session.loggedIn);
+    console.log("User ID:", req.session.user_id);
+    // res.render('swiper', { photos });
+
+
+    res.render('swiper', {
+      photos,
+      loggedIn: req.session.loggedIn,
+      user: req.session.user_id
+    });
+
+
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err);
+  }
+});
+
+
+
+
+
+// Route to handle login page rendering
+router.get('/login', (req, res) => {
+  if (req.session.loggedIn) {
+    console.log("you are logged in")
+    // Redirect logged-in users to the homepage or dashboard
+    res.redirect('/');
+    return;
+  }
+
+  // Render the login page for users who are not logged in
+  res.render('login');
+});
+
+module.exports = router;
