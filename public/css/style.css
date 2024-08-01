@@ -10,7 +10,7 @@
 }
 
 body {
-  font-family: 'Plus Jakarta Sans';font-size: 22px;
+  font-family: Arial;
   margin: 0;
   display: flex;
   flex-direction: column;
@@ -42,44 +42,28 @@ main {
 }
 
 aside {
+  flex: 0;
   background-color: var(--tertiary);
-  width: 25%;
+  padding: 80px;
   text-align: left;
   color: var(--light);
-  h2 {
-    margin-top: 20px;
-    text-align: center;
-  }
 }
 
 nav {
   display: flex;
-  justify-content: space-between;
   background-color: var(--secondary);
-}
-
-nav h1 {
-  font-size: 30px;
-  margin: 0;
 }
 
 nav a {
   color: var(--light);
-  text-decoration: none !important;
+  padding: 14px 20px;
+  text-decoration: none;
   text-align: center;
-  height: 100%;
-  align-content: center;
-  padding: 10px 10px;
 }
 
 nav a:hover {
   color: var(--secondary);
   background-color: var(--dark);
-}
-
-.partialLoaded {
-  width: 75%;
-  
 }
 
 .album {
