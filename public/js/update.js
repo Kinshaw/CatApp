@@ -33,7 +33,8 @@ updateButton.addEventListener('click', async function (event) {
 
     if (response.ok) {
       console.log('Bio updated successfully');
-      // Optionally, you can add code to update the UI or redirect the user
+        // Refresh the page
+        location.reload();
     } else {
       console.error('Failed to update bio');
     }

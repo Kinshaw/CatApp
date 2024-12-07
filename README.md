@@ -2,27 +2,29 @@
 ### README
 
 ###PROJECT OVERVIEW
-Our goal is to build a full-stack application for the purpose of allowing registered users to upload photos of cats, as well as like or pass on other users cat photos, while adding the liked cats to an album on the user's profile page. Registered users can also vote on a weekly poll, and comment in a forum below the poll in a respectful manner.
+Our goal is to build a full-stack application for the purpose of allowing registered users to upload photos of cats, as well as like or pass on other users cat photos, while adding the liked cats to an album on the user's profile page. 
 The pages/features we are using are as follows:
 Home Page
-Poll Page
 Profile Page
 Settings Page
-Search Page(possibly search bar in nav bar)
+
 
 The application will consist of a landing page to prompt the user to sign in or register an account if they have not already registered an account.
-From the landing page users will be directed to the home page where the users feed of cats will be displayed, with a handy nav bar at the bottom of the page for easy navigation between the applications pages/features.
+From the landing page users will be directed to the home page where the user will see cat photos and be able to swipe left or swipe right to view cats. Their will be a title and description of the cat as well as a like button the user can use to add the photo to their personal album.   
 The application will be built using:
 Node.js
 Express.js
+Sequelize.js
+Swipe.js
+Handlebars.js
 
 
 ### Architecture:
 1. **Backend:**
    - **Node.js & Express.js:** Set up the server and API routes.
    - **Sequelize:** Manage database interactions with PostgreSQL.
-   - **Passport.js:** Handle user authentication.
-   - **AWS S3:** Store cat photos.
+   - **Passport.js:** Handle user authentication. (future development)
+   - **AWS S3:** Store cat photos. (future development)
 
 2. **Frontend:**
    - **Handlebars.js:** Render HTML templates.
@@ -38,7 +40,7 @@ Express.js
 
 #### User Authentication:
 - **Sign Up:**
-  - Route: `POST /signup`
+  - Route: `POST /`
   - Form with fields: username, email, password.
   - Hash password using bcrypt before storing.
 - **Login:**
@@ -50,26 +52,16 @@ Express.js
 
 #### Photo Uploading:
 - **Upload Photo:**
-  - Route: `POST /photos`
+  - Route: `POST /update`
   - Form with fields: photo upload, description, tags.
   - Store photo in AWS S3, save URL in the database.
 - **View Photos:**
   - Route: `GET /photos`
   - Display a feed of uploaded photos.
 
-#### Voting Polls:
-- **Create Poll (Admin Only):**
-  - Route: `POST /admin/polls`
-  - Form with fields: photo selection, poll question.
-  - Restrict access to admin users only.
-- **Vote on Poll:**
-  - Route: `POST /polls/:pollId/vote`
-  - Users can select an option and submit their vote.
-- **View Poll Results:**
-  - Route: `GET /polls/:pollId`
-  - Display results and comments.
 
-#### Comments:
+
+#### Comments (future development):
 - **Add Comment:**
   - Route: `POST /photos/:photoId/comments`
   - Form with field: comment_text.
@@ -77,16 +69,6 @@ Express.js
   - Route: `GET /photos/:photoId/comments`
   - Display comments for a specific photo.
 
-#### Admin Panel:
-- **Manage Users:**
-  - Route: `GET /admin/users`
-  - List, edit, and delete users.
-- **Manage Photos:**
-  - Route: `GET /admin/photos`
-  - List, edit, and delete photos.
-- **Manage Polls:**
-  - Route: `GET /admin/polls`
-  - List, edit, and delete polls.
 
 ### Database Schema:
 
@@ -131,15 +113,22 @@ Express.js
    - `created_at`: Timestamp
    - `updated_at`: Timestamp
 
+6. ** PhotoLikes Table:**
+   - `id`: Primary Key
+   - `photo_id`: Foreign Key (references Photos)
+   - `user_id`: Foreign Key (references Users)
+
 ### User Stories:
 
 1. **As a user, I want to sign up and create a profile so that I can participate in the app.**
-2. **As a user, I want to upload photos of my cat so that I can share them with others.**
+2. **As a user, I want to uploadstore my favorite cat photos so that I can browse my collection.**
+3. **As a user, I want to be able to edit my bio.**
+In the future: 
 3. **As a user, I want to vote on polls created by the admin so that I can engage with the community.**
 4. **As a user, I want to view the results of polls so that I can see what others think about the photos.**
 5. **As a user, I want to comment on photos so that I can share my thoughts and interact with other users.**
 6. **As an admin, I want to create polls so that I can gather feedback from the community.**
-7. **As an admin, I want to manage users, photos, and polls so that I can ensure the platform remains safe and enjoyable.**
+
 
 ### Detailed Implementation Plan:
 
@@ -174,3 +163,9 @@ Express.js
 - **Use version control:** Use Git and a platform like GitHub for source control and collaboration.
 - **Plan sprints:** Break down the project into sprints with specific goals and deadlines.
 - **Regular meetings:** Schedule regular check-ins to discuss progress, address challenges, and adjust plans as needed.
+
+
+This project has been deployed using Render.com: https://catapp-pde6.onrender.com
+
+It is available in the following gitHub link: https://github.com/Kinshaw/CatApp and here for the version with the Render deploy variables: https://github.com/KimCBNS/CatApp
+
